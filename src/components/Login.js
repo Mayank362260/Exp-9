@@ -13,10 +13,18 @@ function Login() {
       });
 
       if (res.data.token) {
+        const role = username.includes("admin") ? "ADMIN" : "USER";
+
         sessionStorage.setItem("token", res.data.token);
-        window.location.href = "/dashboard";
+        sessionStorage.setItem("role", role);
+
+        if (role === "ADMIN") {
+          window.location.href = "/admin";
+        } else {
+          window.location.href = "/user";
+        }
       }
-    } catch (err) {
+    } catch {
       alert("Invalid Credentials");
     }
   };
@@ -24,9 +32,23 @@ function Login() {
   return (
     <div className="container mt-5">
       <h2>Login</h2>
-      <input className="form-control" onChange={(e)=>setUsername(e.target.value)} placeholder="Username" /><br/>
-      <input className="form-control" type="password" onChange={(e)=>setPassword(e.target.value)} placeholder="Password" /><br/>
-      <button className="btn btn-primary" onClick={login}>Login</button>
+
+      <input
+        className="form-control"
+        placeholder="Username"
+        onChange={(e) => setUsername(e.target.value)}
+      /><br/>
+
+      <input
+        className="form-control"
+        type="password"
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      /><br/>
+
+      <button className="btn btn-primary" onClick={login}>
+        Login
+      </button>
     </div>
   );
 }
